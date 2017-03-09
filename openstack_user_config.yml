@@ -113,3 +113,28 @@ haproxy_hosts:
   infra:
     ip: 118.69.135.198
     
+
+# ceilometer (telemetry API)
+metering-infra_hosts:
+  infra:
+    ip: 118.69.135.198
+
+
+# aodh (telemetry alarm service)
+metering-alarm_hosts:
+  infra:
+    ip: 118.69.135.198
+
+
+# gnocchi (telemetry metrics storage)
+metrics_hosts:
+  infra:
+    ip: 118.69.135.198
+
+
+# ceilometer compute agent (telemetry)
+metering-compute_hosts:
+  infra:
+    ip: 118.69.135.198
+
+
