@@ -11,7 +11,7 @@ used_ips:
 
 global_overrides:
   internal_lb_vip_address: 172.29.236.51
-  external_lb_vip_address: 192.168.88.100
+  external_lb_vip_address: 118.69.135.198
   tunnel_bridge: "br-vxlan"
   management_bridge: "br-mgmt"
   provider_networks:
@@ -57,42 +57,42 @@ global_overrides:
           - nova_compute
 
 shared-infra_hosts:
-  infra01:
+  infra:
     # Rabbitmq, and galera are set to multiples to test clustering.
     affinity:
       galera_container: 3
       rabbit_mq_container: 3
-    ip: 192.168.88.100
+    ip: 118.69.135.198
 
 os-infra_hosts:
-  infra01:
+  infra:
     # Horizon is set to multiple to test clustering. This test only requires x2.
     affinity:
       horizon_container: 2
-    ip: 192.168.88.100
+    ip: 118.69.135.198
 
 storage-infra_hosts:
-  infra01:
-    ip: 192.168.88.100
+  infra:
+    ip: 118.69.135.198
 
 repo-infra_hosts:
-  infra01:
-    ip: 192.168.88.100
+  infra:
+    ip: 118.69.135.198
 
 identity_hosts:
-  infra01:
+  infra:
     # Keystone is set to multiple to test clustering. This test only requires x2.
     affinity:
       keystone_container: 2
-    ip: 192.168.88.100
+    ip: 118.69.135.198
 
 compute_hosts:
-  compute01:
-    ip: 192.168.88.101
+  infra:
+    ip: 118.69.135.198
 
 storage_hosts:
-  compute01:
-    ip: 192.168.88.101
+  infra:
+    ip: 118.69.135.198
     container_vars:
       cinder_backends:
         limit_container_types: cinder_volume
@@ -102,14 +102,14 @@ storage_hosts:
           volume_backend_name: LVM_iSCSI
 
 log_hosts:
-  infra01:
-    ip: 192.168.88.100
+  infra:
+    ip: 118.69.135.198
 
 network_hosts:
-  infra01:
-    ip: 192.168.88.100
+  infra:
+    ip: 118.69.135.198
 
 haproxy_hosts:
-  infra01:
-    ip: 192.168.88.100
+  infra:
+    ip: 118.69.135.198
     
