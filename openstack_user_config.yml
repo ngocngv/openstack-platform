@@ -1,3 +1,115 @@
-# https://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/app-config-prod.html
+---
+cidr_networks:
+  container: 172.29.236.0/22
+  tunnel: 172.29.240.0/22
+  storage: 172.29.244.0/22
 
+used_ips:
+  - "172.29.236.1,172.29.236.255"
+  - "172.29.240.1,172.29.240.255"
+  - "172.29.244.1,172.29.244.255"
 
+global_overrides:
+  internal_lb_vip_address: 172.29.236.51
+  external_lb_vip_address: 192.168.88.100
+  tunnel_bridge: "br-vxlan"
+  management_bridge: "br-mgmt"
+  provider_networks:
+    - network:
+        container_bridge: "br-mgmt"
+        container_type: "veth"
+        container_interface: "eth1"
+        ip_from_q: "container"
+        type: "raw"
+        group_binds:
+          - all_containers
+          - hosts
+        is_container_address: true
+        is_ssh_address: true
+    - network:
+        container_bridge: "br-vxlan"
+        container_type: "veth"
+        container_interface: "eth10"
+        ip_from_q: "tunnel"
+        type: "vxlan"
+        range: "1:1000"
+        net_name: "vxlan"
+        group_binds:
+          - neutron_linuxbridge_agent
+    - network:
+        container_bridge: "br-vlan"
+        container_type: "veth"
+        container_interface: "eth11"
+        type: "flat"
+        net_name: "flat"
+        group_binds:
+          - neutron_linuxbridge_agent
+    - network:
+        container_bridge: "br-storage"
+        container_type: "veth"
+        container_interface: "eth2"
+        ip_from_q: "storage"
+        type: "raw"
+        group_binds:
+          - glance_api
+          - cinder_api
+          - cinder_volume
+          - nova_compute
+
+shared-infra_hosts:
+  infra01:
+    # Rabbitmq, and galera are set to multiples to test clustering.
+    affinity:
+      galera_container: 3
+      rabbit_mq_container: 3
+    ip: 192.168.88.100
+
+os-infra_hosts:
+  infra01:
+    # Horizon is set to multiple to test clustering. This test only requires x2.
+    affinity:
+      horizon_container: 2
+    ip: 192.168.88.100
+
+storage-infra_hosts:
+  infra01:
+    ip: 192.168.88.100
+
+repo-infra_hosts:
+  infra01:
+    ip: 192.168.88.100
+
+identity_hosts:
+  infra01:
+    # Keystone is set to multiple to test clustering. This test only requires x2.
+    affinity:
+      keystone_container: 2
+    ip: 192.168.88.100
+
+compute_hosts:
+  compute01:
+    ip: 192.168.88.101
+
+storage_hosts:
+  compute01:
+    ip: 192.168.88.101
+    container_vars:
+      cinder_backends:
+        limit_container_types: cinder_volume
+        lvm:
+          volume_group: cinder-volumes
+          volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
+          volume_backend_name: LVM_iSCSI
+
+log_hosts:
+  infra01:
+    ip: 192.168.88.100
+
+network_hosts:
+  infra01:
+    ip: 192.168.88.100
+
+haproxy_hosts:
+  infra01:
+    ip: 192.168.88.100
+    
