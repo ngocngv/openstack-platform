@@ -1,0 +1,2 @@
+#Ansible: Fernet auto rotate job
+@daily keystone /opt/keystone-fernet-rotate.sh
