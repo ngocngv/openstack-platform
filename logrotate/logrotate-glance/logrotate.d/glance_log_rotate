@@ -1,0 +1,17 @@
+/var/log/glance/glance-manage.log
+/var/log/glance/glance-registry.log
+/var/log/glance/glance-api.log
+{
+        copytruncate
+        weekly
+        missingok
+        rotate 14
+        compress
+        dateext
+        maxage 60
+        notifempty
+        nocreate
+        postrotate
+            restart rsyslog 2>&1 || true
+        endscript
+}
