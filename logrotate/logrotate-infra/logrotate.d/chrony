@@ -1,0 +1,13 @@
+/var/log/chrony/*.log {
+	weekly
+	rotate 7
+	missingok
+	notifempty
+	compress
+	delaycompress
+	sharedscripts
+	create 644
+	postrotate
+		/usr/bin/chronyc -a cyclelogs > /dev/null 2>&1 || true
+	endscript
+}

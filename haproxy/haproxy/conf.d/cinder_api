@@ -1,0 +1,32 @@
+# Ansible managed: /etc/ansible/roles/haproxy_server/templates/service.j2 modified on 2017-02-10 11:35:31 by root on infra
+
+    
+frontend cinder_api-front-1
+    bind 118.69.135.198:8776 ssl crt /etc/ssl/private/haproxy.pem ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS
+    option httplog
+    option forwardfor except 127.0.0.0/8
+    option http-server-close
+    reqadd X-Forwarded-Proto:\ https
+    mode http
+    default_backend cinder_api-back
+
+frontend cinder_api-front-2
+    bind 172.29.236.51:8776 
+    option httplog
+    option forwardfor except 127.0.0.0/8
+    option http-server-close
+    mode http
+    default_backend cinder_api-back
+
+
+backend cinder_api-back
+    mode http
+    balance leastconn
+    stick store-request src
+    stick-table type ip size 256k expire 30m
+    option forwardfor
+    option httplog
+    option httpchk HEAD /
+
+    server infra_cinder_api_container-35d8db74 172.29.237.11:8776 check port 8776 inter 12000 rise 1 fall 1
+

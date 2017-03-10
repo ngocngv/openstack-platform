@@ -1,0 +1,29 @@
+# Ansible managed: /etc/ansible/roles/haproxy_server/templates/service.j2 modified on 2017-02-10 11:35:31 by root on infra
+
+    
+frontend nova_console-front-1
+    bind 118.69.135.198:6082 ssl crt /etc/ssl/private/haproxy.pem ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS
+    option tcplog
+    timeout client 60m
+    mode tcp
+    default_backend nova_console-back
+
+frontend nova_console-front-2
+    bind 172.29.236.51:6082 
+    option tcplog
+    timeout client 60m
+    mode tcp
+    default_backend nova_console-back
+
+
+backend nova_console-back
+    mode tcp
+    balance source
+    timeout server 60m
+    stick store-request src
+    stick-table type ip size 256k expire 30m
+    option tcplog
+    option tcp-check
+
+    server infra_nova_console_container-d2481d50 172.29.238.213:6082 check port 6082 inter 12000 rise 1 fall 1
+

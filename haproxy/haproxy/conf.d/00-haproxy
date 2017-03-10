@@ -1,0 +1,25 @@
+# Ansible managed: /etc/ansible/roles/haproxy_server/templates/haproxy.cfg.j2 modified on 2017-02-10 11:35:31 by root on infra
+
+global
+        log 127.0.0.1 local0
+        log 127.0.0.1 local1 notice
+        chroot /var/lib/haproxy
+        user haproxy
+        group haproxy
+        daemon
+        maxconn 4096
+        tune.bufsize 384000
+        stats socket /var/run/haproxy.stat level admin mode 600
+                ssl-default-bind-options no-sslv3
+        tune.ssl.default-dh-param 2048
+        
+defaults
+        log global
+        option dontlognull
+        option redispatch
+        retries 3
+        timeout client 50s
+        timeout connect 10s
+        timeout server 50s
+        maxconn 4096
+
