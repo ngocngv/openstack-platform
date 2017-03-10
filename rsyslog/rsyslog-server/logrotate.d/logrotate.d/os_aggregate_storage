@@ -1,0 +1,12 @@
+/var/log/log-storage/**/*.log
+{
+        copytruncate
+        weekly
+        missingok
+        rotate 14
+        compress
+        dateext
+        maxage 60
+        notifempty
+        nocreate
+}
