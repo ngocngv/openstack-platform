@@ -1,0 +1,17 @@
+/var/log/neutron/neutron-server.log
+/var/log/conntrackd.log
+/var/log/conntrackd-stats.log
+{
+        copytruncate
+        weekly
+        missingok
+        rotate 14
+        compress
+        dateext
+        maxage 60
+        notifempty
+        nocreate
+        postrotate
+            restart rsyslog 2>&1 || true
+        endscript
+}
