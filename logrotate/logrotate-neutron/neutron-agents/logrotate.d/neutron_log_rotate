@@ -1,0 +1,22 @@
+/var/log/neutron/neutron-linuxbridge-agent.log
+/var/log/neutron/neutron-lbaasv2-agent.log
+/var/log/neutron/neutron-dhcp-agent.log
+/var/log/neutron/neutron-metadata-agent.log
+/var/log/neutron/neutron-l3-agent.log
+/var/log/neutron/neutron-metering-agent.log
+/var/log/conntrackd.log
+/var/log/conntrackd-stats.log
+{
+        copytruncate
+        weekly
+        missingok
+        rotate 14
+        compress
+        dateext
+        maxage 60
+        notifempty
+        nocreate
+        postrotate
+            restart rsyslog 2>&1 || true
+        endscript
+}
