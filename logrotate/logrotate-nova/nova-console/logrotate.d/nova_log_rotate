@@ -1,0 +1,16 @@
+/var/log/nova/nova-spicehtml5proxy.log
+/var/log/nova/nova-consoleauth.log
+{
+        copytruncate
+        weekly
+        missingok
+        rotate 14
+        compress
+        dateext
+        maxage 60
+        notifempty
+        nocreate
+        postrotate
+            restart rsyslog 2>&1 || true
+        endscript
+}
