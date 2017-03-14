@@ -1,0 +1,16 @@
+/var/log/ceilometer/ceilometer-polling.log
+/var/log/ceilometer/ceilometer-agent-notification.log
+{
+        copytruncate
+        weekly
+        missingok
+        rotate 14
+        compress
+        dateext
+        maxage 60
+        notifempty
+        nocreate
+        postrotate
+            restart rsyslog 2>&1 || true
+        endscript
+}
