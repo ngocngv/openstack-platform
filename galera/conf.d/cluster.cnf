@@ -1,0 +1,43 @@
+[mysqld]
+# Path to Galera library
+wsrep_provider = /usr/lib/galera/libgalera_smm.so
+wsrep_provider_options = "gcache.size = 1024M"
+
+# Cluster connection URL contains the IPs of node#1, node#2 and node#3
+wsrep_cluster_address = gcomm://172.29.237.92,172.29.238.228,172.29.239.247
+
+# Address for incoming client connections.
+wsrep_node_incoming_address = 172.29.239.247
+
+# In order for Galera to work correctly binlog format should be ROW
+binlog_format = ROW
+
+# MyISAM storage engine has only experimental support
+default_storage_engine = InnoDB
+
+# This changes how InnoDB autoincrement locks are managed and is a requirement for Galera
+innodb_autoinc_lock_mode = 2
+
+# This should be the IP and DNS name for the current system on which you're editing the file.
+wsrep_node_address = 172.29.239.247
+wsrep_node_name = infra_galera_container-17e31542
+
+# to enable debug level logging, set this to 1
+wsrep_debug = 0
+
+# SST method
+wsrep_sst_method = xtrabackup-v2
+wsrep_sst_auth = root:68c7e63aaa6b62ba99c32da71ad2f8d78b6c90795b19d
+wsrep_slave_threads = 8
+
+# Cluster name
+wsrep_cluster_name = "openstack_galera_cluster"
+
+# how many times to retry deadlocked autocommits
+wsrep_retry_autocommit = 3
+
+[xtrabackup]
+compress
+parallel = 4
+compress-threads = 4
+rebuild-threads = 4
